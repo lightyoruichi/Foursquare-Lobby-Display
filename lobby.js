@@ -111,9 +111,10 @@ var map;
 // The current marker and info about it.
 var marker;
 var markerPin;
-var markerPinImage = new google.maps.MarkerImage('https://foursquare.com/img/pin-blue-transparent.png',
-                                                 new google.maps.Size(44, 55),
-                                                 new google.maps.Point(0,0));
+var markerPinImage = new google.maps.MarkerImage('pin-blue-transparent.png',
+                                                 new google.maps.Size(44, 71),
+                                                 new google.maps.Point(0,0),
+                                                 new google.maps.Point(0, 22));
 var latlng;
 
 // The timeouts for refreshing the map.
@@ -190,18 +191,20 @@ function switchVenue() {
   // First remove the old marker
   if (defined(marker)) marker.setMap(null);
   if (defined(markerPin)) markerPin.setMap(null);
+  markerPin = new google.maps.Marker({
+    position: latlng,
+    map: map,
+    icon: markerPinImage
+  });
   marker = new google.maps.Marker({
     position: latlng,
     map: map,
     title: venue['name'],
-    icon: getIcon(venue)
+    icon: new google.maps.MarkerImage(getIcon(venue),
+                                      new google.maps.Size(32,32),
+                                      new google.maps.Point(0,0),
+                                      new google.maps.Point(-6,0))
   });
-//   markerPin = new google.maps.Marker({
-//     position: latlng,
-//     map: map,
-//     icon: markerPinImage
-//   });
-
 
   makeInfoContent(venue, events, tweets);
   getPhotos(venue['id'], function(photos) {
