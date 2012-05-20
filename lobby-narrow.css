@@ -1,0 +1,21 @@
+#info {
+  z-index: 1;
+  background-color: white;
+  bottom: 10px;
+  position: absolute;
+  padding: 5px 10px;
+  width: 750px;
+  height: 340px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#venue {
+  width: 350px;
+}
+
+#photo {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}

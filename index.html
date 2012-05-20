@@ -3,7 +3,8 @@
 <head>
   <title>Foursquare</title>
   <meta content="initial-scale=1.0 maximum-scale=1.0 user-scalable=0" name="viewport" />
-  <link rel="stylesheet" type="text/css" href="lobby.css">
+  <link rel="stylesheet" type="text/css" href="lobby-core.css">
+  <link id="sized-stylesheet" rel="stylesheet" type="text/css" href="lobby-wide.css" />
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
   <script type="text/javascript" src="../jquery.ba-bbq.js"></script>
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script> 
@@ -12,6 +13,12 @@
 <body onload="load()";>
   <div id="map_canvas"></div>
   <div id="loading">&nbsp;</div>
-  <div id="info" style="display:none">&nbsp;</div>
+  <div id="info" style="display:none">
+    <div id=infoContent class=infoContent>
+      <div id=venue></div>
+      <div id=tweets class=tweets></div>
+      <div id=photo class=photoDiv></div>
+    </div>
+  </div>
 </body>
 </html>

@@ -4,6 +4,7 @@
 //     * Try using pins
 //     * Maybe use herenow count?
 //  * Maybe add mini-map showing larger overview?
+//  * Parameterize refresh rate.
 
 
 // common objects & functions
@@ -50,6 +51,29 @@ function errorFunc(data, textStatus, errorThrown) {
   debug('Error: ' + JSON.stringify(data));
 }
 
+var mode = 'wide';
+
+// Adjust the stylesheet for narrow browsers.
+function adjustStyle(width, height) {
+  if (height > width) {
+    debug('[' + width + 'x' + height + ']: Using narrow stylesheet');
+    $('#sized-stylesheet').attr('href', 'lobby-narrow.css');
+    document.getElementById('info').style.left = ((width - 750) / 2) + 'px';
+    mode = 'narrow';
+  } else {
+    debug('[' + width + 'x' + height + ']: Using wide stylesheet');
+    $('#sized-stylesheet').attr('href', 'lobby-wide.css');
+    mode = 'wide';
+  }
+}
+
+$(function() {
+  adjustStyle($(this).width(), $(this).height());
+  $(window).resize(function() {
+    adjustStyle($(this).width(), $(this).height());
+  });
+});
+
 var token = null;
 var apihost = null;
 var webhost = null;
@@ -91,7 +115,6 @@ var markerPinImage = new google.maps.MarkerImage('https://foursquare.com/img/pin
                                                  new google.maps.Size(44, 55),
                                                  new google.maps.Point(0,0));
 var latlng;
-var info;
 
 // The timeouts for refreshing the map.
 var LOAD_TRENDING_INTERVAL = 1000*60*30;  // Reload the trending data every 30 minutes.
@@ -100,14 +123,13 @@ var SWITCH_VENUE_INTERVAL = 1000*15;  // Switch venues every 15 seconds.
 var switchVenueTimeout;
 
 function load() {
-  info = document.getElementById('info');
   getToken();
   loadMap();
   loadTrending(switchVenue);
 }
 
 function loadMap() {
-  map = new google.maps.Map(document.getElementById("map_canvas"), {
+  map = new google.maps.Map(document.getElementById('map_canvas'), {
     zoom: 2,
     center: new google.maps.LatLng(40.7, -74),
     mapTypeId: google.maps.MapTypeId.SATELLITE,
@@ -121,7 +143,7 @@ function loadTrending(closure) {
   var url = 'https://' + apihost + '/v2/private/worldwidetrending' +
     '?oauth_token=' + token +
     '&includeTweets=foursquare' +
-    //'&limit=5' +
+    '&limit=5' +
     '&v=20120315';
   $.ajax({
     url: url,
@@ -130,6 +152,8 @@ function loadTrending(closure) {
     error: errorFunc,
     success: function(data) {
       document.getElementById('loading').style.display = 'none';
+      document.getElementById('info').style.display = '';
+
       venues = shuffle(data['response']['venues']);
       debug('...done, got ' + venues.length + ' trending venues');
       for (var ii = 0; ii < data['response']['venues'].length; ++ii) {
@@ -179,8 +203,7 @@ function switchVenue() {
 //   });
 
 
-  info.style.display = '';
-  info.innerHTML = makeInfoContent(venue, events, tweets);
+  makeInfoContent(venue, events, tweets);
   getPhotos(venue['id'], function(photos) {
     if (photos.length < 1) return;
     var photo = photos[0];
@@ -190,14 +213,24 @@ function switchVenue() {
         url = photo['sizes']['items'][ii]['url'];
       }
     }
-    info.innerHTML += '<div class=photoDiv><img class=photo src=' +
+    document.getElementById('photo').innerHTML = '<img class=photo src=' +
       url + '></div>';
   });
 
   map.setCenter(latlng);
   map.setZoom(15);
-  map.panBy(175, 0);
-  setTimeout("map.setCenter(latlng);map.setZoom(17);map.panBy(175,0);", 10000);
+
+  // Adjust the marker's position depending on where the infobox is,
+  // so the marker looks like it's in the center of the map.
+  var zoomCmd = "map.setCenter(latlng);map.setZoom(17);";
+  if (mode == 'wide') {
+    map.panBy(175, 0);
+    zoomCmd += "map.panBy(175,0);";
+  } else {
+    map.panBy(0, 170);
+    zoomCmd += "map.panBy(0,170);";
+  }
+  setTimeout(zoomCmd, 10000);
 
   switchVenueTimeout = setTimeout("switchVenue()", SWITCH_VENUE_INTERVAL);
 }
@@ -213,6 +246,7 @@ function cleanTweet(tweet) {
 }
 
 function makeInfoContent(venue, events, tweets) {
+
   var eventHTML = '';
   if (defined(events) && defined(events['items']) && events['items'].length > 0) {
     var eventName = events['items'][0]['name'];
@@ -231,13 +265,16 @@ function makeInfoContent(venue, events, tweets) {
     }
   }
   
-  return '<div class=infoContent>' +
-    '<table width=100%><tr><td class=categoryIcon rowspan=2><img src="' + getIcon(venue) + '"></td>' +
-    '<td><div class=venueName>' + venue['name'] + '</div>' +
+  document.getElementById('venue').innerHTML = '<table width=100%>' +
+    '<tr><td class=categoryIcon rowspan=2><img src="' + getIcon(venue) + '"></td>' +
+    '<td><div class=venueName><a href=http://foursquare.com/v/' + venue['id'] + '>' +
+    venue['name'] + '</a></div>' +
     eventHTML + '</td>' +
-    '<td class=hereNow><img class=hereNowImg src=herenow.png><span class=hereNowNum>' + venue['hereNow']['count'] + '</span>&nbsp;people</td></tr>' +
-    '<tr><td colspan=2 class=venueLoc>' + makeAddress(venue['location']) + '</td></tr></table>' +
-    '<div class=tweets>' + tweetHTML + '</div></div>';
+    '<td class=hereNow><img class=hereNowImg src=herenow.png>' +
+    '<span class=hereNowNum>' + venue['hereNow']['count'] + '</span>&nbsp;people</td></tr>' +
+    '<tr><td colspan=2 class=venueLoc>' + makeAddress(venue['location']) + '</td></tr></table>';
+
+  document.getElementById('tweets').innerHTML = tweetHTML;
 }
 
 function getIcon(venue) {

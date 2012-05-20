@@ -3,12 +3,27 @@ body {
   height: 100%; margin: 0; padding: 0;
   font:normal 13px/140% "Helvetica Neue",Helvetica,Verdana,Arial,sans-serif;
 }
+
 #map_canvas {
   z-index: 0;
   width: 100%;
   height: 100%;
   align: left;
 }
+
+#loading {
+  z-index: 1;
+  margin-left: -70px;
+  left: 50%;
+  top: 30%;
+  display: table-cell;
+  vertical-align: middle;
+  background-image: url('loading.gif');
+  min-height: 140px;
+  min-width: 140px;
+  position: absolute;
+}
+
 .venueName {
   color: #2398C9;
   font-size: 15px;
@@ -31,6 +46,29 @@ body {
   padding-right: 5px;
   vertical-align: top;
 }
+.hereNow {
+  width: 105px;
+  text-align: right;
+  vertical-align: top;
+}
+.hereNowImg {
+  margin-bottom: -5px;
+}
+.hereNowNum {
+  font-size: 120%;
+  font-weight: bold;
+  padding-left: 3px;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+
+
 .tweet {
   color: #444;
   max-width: 316px;
@@ -48,40 +86,8 @@ body {
   color: #888;
   white-space: nowrap;
 }
-#loading {
-  z-index: 1;
-  margin-left: -70px;
-  left: 50%;
-  top: 30%;
-  display: table-cell;
-  vertical-align: middle;
-  background-image: url('loading.gif');
-  min-height: 140px;
-  min-width: 140px;
-  position: absolute;
-}
-#info {
-  z-index: 1;
-  background-color: white;
-  top: 10px;
-  right: 10px;
-  position: absolute;
-  width: 350px;
-  padding: 5px 10px;
-}
-.hereNow {
-  width: 105px;
-  text-align: right;
-  vertical-align: top;
-}
-.hereNowImg {
-  margin-bottom: -5px;
-}
-.hereNowNum {
-  font-size: 120%;
-  font-weight: bold;
-  padding-left: 3px;
-}
+
+
 .photoDiv {
   width: 300px;
   height: 300px;
@@ -92,26 +98,3 @@ body {
 }
 
 
-#results {
-  width: 19%;
-  height: 87%;
-  position: absolute;
-  float: right;
-  right: 0px;
-  top: 60px;
-  background-color: white;
-  padding: 5px;
-  border: 1px solid black;
-  overflow: scroll;
-}
-#search {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  padding: 3px;
-}
-.result {
-  border-bottom: 1px solid grey;
-  padding-bottom: 4px;
-  margin-bottom: 8px;
-}
