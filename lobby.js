@@ -74,6 +74,19 @@ $(function() {
   });
 });
 
+// Show/hide the controls on 'c'
+$(document).bind('keydown', function(e) {
+  debug(e.which);
+  if (e.which == 191) {
+    var elt = document.getElementById('controls');
+    if (elt.style.display == 'none') {
+      elt.style.display = '';
+    } else {
+      elt.style.display = 'none';
+    }
+  }
+});
+
 var token = null;
 var apihost = null;
 var webhost = null;
@@ -120,7 +133,6 @@ var latlng;
 // The timeouts for refreshing the map.
 var LOAD_TRENDING_INTERVAL = 1000*60*30;  // Reload the trending data every 30 minutes.
 var loadTrendingTimeout;
-var SWITCH_VENUE_INTERVAL = 1000*15;  // Switch venues every 15 seconds.
 var switchVenueTimeout;
 
 function load() {
@@ -233,9 +245,10 @@ function switchVenue() {
     map.panBy(0, 170);
     zoomCmd += "map.panBy(0,170);";
   }
-  setTimeout(zoomCmd, 10000);
 
-  switchVenueTimeout = setTimeout("switchVenue()", SWITCH_VENUE_INTERVAL);
+  var interval = parseInt(document.f.r.value) * 1000;
+  setTimeout(zoomCmd, 2 * interval / 3);
+  switchVenueTimeout = setTimeout("switchVenue()", interval);
 }
 
 function cleanTweet(tweet) {

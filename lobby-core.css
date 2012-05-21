@@ -98,3 +98,13 @@ a:hover {
 }
 
 
+#controls {
+  border: 1px solid #AAA;
+  padding: 2px;
+  margin: 2px;
+  font-size: 75%;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: white;
+}
