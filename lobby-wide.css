@@ -6,6 +6,7 @@
   position: absolute;
   width: 350px;
   padding: 5px 10px;
+  border-radius: 5px;
 }
 
 #venue {

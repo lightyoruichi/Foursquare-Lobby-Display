@@ -76,7 +76,6 @@ $(function() {
 
 // Show/hide the controls on 'c'
 $(document).bind('keydown', function(e) {
-  debug(e.which);
   if (e.which == 191) {
     var elt = document.getElementById('controls');
     if (elt.style.display == 'none') {
@@ -156,7 +155,7 @@ function loadTrending(closure) {
   var url = 'https://' + apihost + '/v2/private/worldwidetrending' +
     '?oauth_token=' + token +
     '&includeTweets=foursquare' +
-    '&limit=5' +
+    '&limit=' + document.f.l.value +
     '&v=20120315';
   $.ajax({
     url: url,

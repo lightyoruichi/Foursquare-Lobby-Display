@@ -1,5 +1,6 @@
 #info {
   z-index: 1;
+  border-radius: 5px;
   background-color: white;
   bottom: 10px;
   position: absolute;

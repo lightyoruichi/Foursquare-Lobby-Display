@@ -28,7 +28,7 @@ body {
   color: #2398C9;
   font-size: 15px;
   font-weight: bold;
-  width: 180px;
+  width: 185px;
 }
 .venueLoc {
   color: #888;
@@ -39,7 +39,7 @@ body {
   margin-top: 4px;
   color: #888;
   font-weight: bold;
-  width: 180px;
+  width: 185px;
   overflow: hidden;
 }
 .categoryIcon {
@@ -47,7 +47,7 @@ body {
   vertical-align: top;
 }
 .hereNow {
-  width: 105px;
+  width: 100px;
   text-align: right;
   vertical-align: top;
 }
