@@ -129,8 +129,8 @@ var markerPinImage = new google.maps.MarkerImage('pin-blue-transparent.png',
                                                  new google.maps.Point(0, 22));
 var latlng;
 
-// The timeouts for refreshing the map.
-var LOAD_TRENDING_INTERVAL = 1000*60*30;  // Reload the trending data every 30 minutes.
+// The timeouts for refreshing the map and data.
+var LOAD_TRENDING_INTERVAL = 1000*60*60;  // Reload the trending data every 60 minutes.
 var loadTrendingTimeout;
 var switchVenueTimeout;
 
@@ -198,6 +198,8 @@ function switchVenue() {
   var events = venueAndTweets['events'];
   var tweets = venueAndTweets['tweets'];
   latlng = new google.maps.LatLng(venue['location']['lat'], venue['location']['lng']); 
+
+  debug('Switching to venue #' + idx + ': ' + venue['name'])
 
   // First remove the old marker
   if (defined(marker)) marker.setMap(null);
