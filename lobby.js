@@ -58,7 +58,7 @@ function adjustStyle(width, height) {
   if (height > width) {
     debug('[' + width + 'x' + height + ']: Using narrow stylesheet');
     $('#sized-stylesheet').attr('href', 'lobby-narrow.css');
-    document.getElementById('info').style.left = ((width - 750) / 2) + 'px';
+    document.getElementById('info').style.left = ((width - 710) / 2) + 'px';
     mode = 'narrow';
   } else {
     debug('[' + width + 'x' + height + ']: Using wide stylesheet');
